@@ -8,6 +8,24 @@ export const Container = styled.div`
     flex-direction: column;
     padding: 16px;
 
+    >div{
+        max-width: 900px;
+        width: 100%;
+
+        >div#ContainerSearch{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            >svg{
+                height: 32px;
+                width: 32px;
+                margin-right: 16px;
+                color: #CDD9E5;
+            }
+        }
+    }
+
     input{
         height: 36px;
         width: 100%;

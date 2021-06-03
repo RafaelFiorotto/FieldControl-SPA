@@ -1,118 +1,78 @@
 import { Container, Header, Content } from './styles'
 import { RiGitRepositoryFill, RiStarLine } from 'react-icons/ri'
+import  debounce  from 'lodash.debounce'
+import {useCallback, useState} from 'react'
+import axios from 'axios'
+import {format} from 'date-fns'
+import {AiFillGithub} from 'react-icons/ai'
 
 
 export default function Home(){
+    
+    const [repositoriesFound, setRepositoriesFound] = useState({})
+
+    async function loadRepositories(search){
+        try{
+           const response = await axios.get(`https://api.github.com/search/repositories?q=${search}&page=1`)
+           setRepositoriesFound(response.data)
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    const search = useCallback(
+        debounce((e) => loadRepositories(e.target.value),350), []
+    )
+
     return (
         <Container>
-            <input type="text" />
+            <div>
+                <div id='ContainerSearch'> 
+                    <AiFillGithub/>
+                    <input type="text" onChange={search} placeholder="Digite sua pesquisa.. "/>
+                </div>
             <Header>
-                <h1>1000 repositorios encontrados</h1>
+                <h1>{repositoriesFound.total_count} repositorios encontrados</h1>
             </Header>
-            <Content>
-                <div>
-                    <RiGitRepositoryFill/>
-                </div>
-                <div>
-                    <p>Nodejs/repository</p>
-                    <p>Biblioteca feita em node</p>
-                    <div>
-                        <span>
-                            <RiStarLine/>
-                            <p>10.0k</p>
-                        
-                        </span>
-                        <span>
-                            <p>Javascript</p>
-                        </span>
-                        <span>
-                            <p>
-                                MIT license
-                            </p>
-                        </span>
-                    </div>
-                </div>
+                {repositoriesFound.items && repositoriesFound.items.map(item => (
+                    <Content key={item.id}>
+                        <div>
+                            <RiGitRepositoryFill/>
+                        </div>
+                        <div>
+                            <p>{item.full_name}</p>
+                            <p>{item.description}</p>
+                            <div>
+                                <span>
+                                    <RiStarLine/>
+                                    <p>{item.stargazers_count}</p>
+                                
+                                </span>
+                                <span>
+                                    <p>{item.language}</p>
+                                </span>
+                                <span>
+                                    <p>
+                                        {item.license && item.license.name}
+                                    </p>
+                                </span>
+                                <span>
+                                    <p>
+                                        Atualizado em: {item.updated_at && format(new Date(item.updated_at),'dd/MM/yyyy HH:mm')}
+                                    </p>
+                                </span>
+                                <span>
+                                    <p>
+                                        {item.open_issues} issues
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                    </Content>
 
-            </Content>
-
-            <Content>
-                <div>
-                    <RiGitRepositoryFill/>
-                </div>
-                <div>
-                    <p>Nodejs/repository</p>
-                    <p>Biblioteca feita em node</p>
-                    <div>
-                        <span>
-                            <RiStarLine/>
-                            <p>10.0k</p>
-                        
-                        </span>
-                        <span>
-                            <p>Javascript</p>
-                        </span>
-                        <span>
-                            <p>
-                                MIT license
-                            </p>
-                        </span>
-                    </div>
-                </div>
-
-            </Content>
-
-            <Content>
-                <div>
-                    <RiGitRepositoryFill/>
-                </div>
-                <div>
-                    <p>Nodejs/repository</p>
-                    <p>Biblioteca feita em node</p>
-                    <div>
-                        <span>
-                            <RiStarLine/>
-                            <p>10.0k</p>
-                        
-                        </span>
-                        <span>
-                            <p>Javascript</p>
-                        </span>
-                        <span>
-                            <p>
-                                MIT license
-                            </p>
-                        </span>
-                    </div>
-                </div>
-
-            </Content>
-
-            <Content>
-                <div>
-                    <RiGitRepositoryFill/>
-                </div>
-                <div>
-                    <p>Nodejs/repository</p>
-                    <p>Biblioteca feita em node</p>
-                    <div>
-                        <span>
-                            <RiStarLine/>
-                            <p>10.0k</p>
-                        
-                        </span>
-                        <span>
-                            <p>Javascript</p>
-                        </span>
-                        <span>
-                            <p>
-                                MIT license
-                            </p>
-                        </span>
-                    </div>
-                </div>
-
-            </Content>
-    
+                ))}
+            
+            </div>
         </Container>
     )    
     
