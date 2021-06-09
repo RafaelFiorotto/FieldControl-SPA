@@ -24,6 +24,26 @@ export const Container = styled.div`
                 color: #CDD9E5;
             }
         }
+
+        >div#nextPage{
+            width: 900px;
+            height: 100px;
+            display: flex; 
+            justify-content: space-around;
+            margin-top: 10px;
+
+            >button{
+                width:25%;
+                height: 40%;
+                cursor: pointer;
+                font-weight: 525;
+                
+                background-color: #ADBAC7;
+                
+                border: none;
+                
+            }
+        }
     }
 
     input{

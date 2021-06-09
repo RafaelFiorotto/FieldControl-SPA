@@ -71,7 +71,9 @@ export default function Home(){
                     </Content>
 
                 ))}
-            
+                <div id="nextPage">
+                    <button type="button">Proxima pagina</button>
+                </div>
             </div>
         </Container>
     )    
