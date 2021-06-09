@@ -32,7 +32,7 @@ export default function Home(){
                     <input type="text" onChange={search} placeholder="Digite sua pesquisa.. "/>
                 </div>
             <Header>
-                <h1>{repositoriesFound.total_count} repositorios encontrados</h1>
+                <h1>{repositoriesFound.total_count} Repositórios encontrados</h1>
             </Header>
                 {repositoriesFound.items && repositoriesFound.items.map(item => (
                     <Content key={item.id}>
